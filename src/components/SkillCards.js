@@ -10,7 +10,7 @@ export function SkillCard({skill}){
     return (
         <TouchableOpacity style={styles.buttonSkill}>
             <Text style={styles.textSkill}>
-            {skill}
+             {skill}
             </Text>
         </TouchableOpacity>
     )

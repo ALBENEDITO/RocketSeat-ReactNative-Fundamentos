@@ -1,20 +1,45 @@
-import React, {useState} from 'react';
-import { View, Text, StyleSheet, TextInput } from 'react-native';
+import React, {useState, useEffect } from 'react';
+import { 
+  View,
+  Text, 
+  StyleSheet, 
+  TextInput, 
+  FlatList
+} from 'react-native';
+
 import { Button } from '../components/Button';
 import { SkillCard } from '../components/SkillCards';
 
 export function Home(){
   const [newSkill, setNewSkill] = useState('');
   const [mySkills, setMySkills] = useState([]);
+  const [grettings, setGretting] = useState('');
 
   function handleAddNewSkill(){
     setMySkills(oldState => [...oldState, newSkill]);
   }  
 
+  useEffect(() => {
+    const currentHour = new Date().getHours();
+    if (currentHour < 12) {
+      setGretting ('Good mornig');
+    } else if ( currentHour >=12 && currentHour < 18) {
+      setGretting ('Good Afternoon');
+    } else {
+      setGretting('Good night');
+    }
+  },[]);
+
   return (
       <View style={styles.container}>
 
-        <Text style={styles.title}>React Native</Text>
+        <Text style={styles.title}>
+          React Native
+        </Text>
+
+        <Text style={styles.grettings}>
+          {grettings}
+        </Text>
 
         <TextInput 
           style={styles.input}
@@ -29,12 +54,13 @@ export function Home(){
           My Skills
         </Text>
 
-        {
-          mySkills.map(skill => (
-            <SkillCard key={skill} skill={skill}/>
-          ))
-        }
-
+        <FlatList
+            data={mySkills}
+            keyExtractor={item => item}
+            renderItem={({item}) => (
+              <SkillCard skill={item}/>
+            )}
+        />
       </View> 
     
   )
@@ -60,6 +86,8 @@ const styles = StyleSheet.create({
       marginTop: 30,
       borderRadius: 7,
       marginBottom: 30
+    },
+    grettings: {
+      color: '#fff',
     }
-
 });
